@@ -22,7 +22,7 @@ public class CategoriaResource {
 	@RequestMapping(value="/{id}",method = RequestMethod.GET)
 	public ResponseEntity<Optional<Categoria>> find(@PathVariable Integer id) {
 		Optional<Categoria> categoria = categoriaService.buscar(id);
-		return ResponseEntity.ok().body(categoria);
+		return categoria.isPresent() ? ResponseEntity.ok().body(categoria) : ResponseEntity.notFound().build();
 	}
 	
 }
