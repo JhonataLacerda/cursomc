@@ -1,7 +1,5 @@
 package com.teste.cursommc.resources;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,9 +18,9 @@ public class CategoriaResource {
 	private CategoriaService categoriaService;
 	
 	@RequestMapping(value="/{id}",method = RequestMethod.GET)
-	public ResponseEntity<Optional<Categoria>> find(@PathVariable Integer id) {
-		Optional<Categoria> categoria = categoriaService.buscar(id);
-		return categoria.isPresent() ? ResponseEntity.ok().body(categoria) : ResponseEntity.notFound().build();
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
+		Categoria categoria = categoriaService.buscar(id);
+		return  ResponseEntity.ok().body(categoria);
 	}
 	
 }
