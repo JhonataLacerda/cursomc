@@ -1,5 +1,6 @@
 package com.teste.cursommc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,10 @@ public class CategoriaService {
 	public Categoria buscar(Integer id) {
 		Optional<Categoria> categoria = categoriaRepository.findById(id);
 		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encotrado! id"+id+", Tipo"+ Categoria.class.getName()));
+	}
+	
+	public List<Categoria> todos(){
+		List<Categoria> categorias = categoriaRepository.findAll();
+		return categorias;
 	}
 }

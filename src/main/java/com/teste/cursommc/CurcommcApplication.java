@@ -1,5 +1,6 @@
 package com.teste.cursommc;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.teste.cursommc.domain.Cidade;
 import com.teste.cursommc.domain.Cliente;
 import com.teste.cursommc.domain.Endereco;
 import com.teste.cursommc.domain.Estado;
+import com.teste.cursommc.domain.Pagamento;
+import com.teste.cursommc.domain.PagamentoComBoleto;
+import com.teste.cursommc.domain.PagamentoComCartao;
+import com.teste.cursommc.domain.Pedido;
 import com.teste.cursommc.domain.Produto;
+import com.teste.cursommc.domain.enums.EstadoPagamento;
 import com.teste.cursommc.domain.enums.TipoCliente;
 import com.teste.cursommc.repositories.CategoriaRepository;
 import com.teste.cursommc.repositories.CidadeRepository;
 import com.teste.cursommc.repositories.ClienteRepository;
 import com.teste.cursommc.repositories.EnderecoRepository;
 import com.teste.cursommc.repositories.EstadoRepository;
+import com.teste.cursommc.repositories.PagamentoRepository;
+import com.teste.cursommc.repositories.PedidoRepository;
 import com.teste.cursommc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class CurcommcApplication implements CommandLineRunner{
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	public static void main(String[] args) {
 		SpringApplication.run(CurcommcApplication.class, args);
 	}
@@ -72,12 +84,23 @@ public class CurcommcApplication implements CommandLineRunner{
 		cli2.setEnderecos(Arrays.asList(e2,e3));
 		cli1.getTelefones().addAll(Arrays.asList("98432448","92343992"));
 		cli2.getTelefones().addAll(Arrays.asList("964488532","978324885"));
+		SimpleDateFormat sdf  = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"),cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli2, e3);
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENETE, ped2, sdf.parse("20/10/2017 00:00"), null);
+		ped1.setPagamento(pagto1);
+		ped2.setPagamento(pagto2);
+		cli1.getPedidos().addAll(Arrays.asList(ped1));
+		cli2.getPedidos().addAll(Arrays.asList(ped2));
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		estadoRepository.saveAll(Arrays.asList(est1,est2,est3));
 		cidadeRepository.saveAll(Arrays.asList(cid1,cid2,cid3,cid4));
 		clienteRepository.saveAll(Arrays.asList(cli1,cli2));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
+		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
 		
 	}

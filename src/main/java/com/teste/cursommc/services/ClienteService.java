@@ -1,5 +1,6 @@
 package com.teste.cursommc.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,15 @@ public class ClienteService {
 	
 	
 	@Autowired
-	private ClienteRepository categoriaRepository;
+	private ClienteRepository clienteRepository;
 	
 	public Cliente buscar(Integer id) {
-		Optional<Cliente> categoria = categoriaRepository.findById(id);
+		Optional<Cliente> categoria = clienteRepository.findById(id);
 		return categoria.orElseThrow(() -> new ObjectNotFoundException("Objeto não encotrado! id"+id+", Tipo"+ Cliente.class.getName()));
+	}
+	
+	public List<Cliente> todos(){
+		List<Cliente> clientes = clienteRepository.findAll();
+		return clientes;
 	}
 }

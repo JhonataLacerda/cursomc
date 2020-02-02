@@ -1,5 +1,7 @@
 package com.teste.cursommc.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,12 @@ public class CategoriaResource {
 	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		Categoria categoria = categoriaService.buscar(id);
 		return  ResponseEntity.ok().body(categoria);
+	}
+	
+	@RequestMapping
+	public ResponseEntity<List<Categoria>> todos(){
+		List<Categoria> categorias = categoriaService.todos();
+		return ResponseEntity.ok().body(categorias);
 	}
 	
 }
