@@ -2,6 +2,7 @@ package com.teste.cursommc;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,6 +14,7 @@ import com.teste.cursommc.domain.Cidade;
 import com.teste.cursommc.domain.Cliente;
 import com.teste.cursommc.domain.Endereco;
 import com.teste.cursommc.domain.Estado;
+import com.teste.cursommc.domain.ItemPedido;
 import com.teste.cursommc.domain.Pagamento;
 import com.teste.cursommc.domain.PagamentoComBoleto;
 import com.teste.cursommc.domain.PagamentoComCartao;
@@ -25,6 +27,7 @@ import com.teste.cursommc.repositories.CidadeRepository;
 import com.teste.cursommc.repositories.ClienteRepository;
 import com.teste.cursommc.repositories.EnderecoRepository;
 import com.teste.cursommc.repositories.EstadoRepository;
+import com.teste.cursommc.repositories.ItemPedidoRepository;
 import com.teste.cursommc.repositories.PagamentoRepository;
 import com.teste.cursommc.repositories.PedidoRepository;
 import com.teste.cursommc.repositories.ProdutoRepository;
@@ -48,6 +51,9 @@ public class CurcommcApplication implements CommandLineRunner{
 	private PedidoRepository pedidoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
+	
 	public static void main(String[] args) {
 		SpringApplication.run(CurcommcApplication.class, args);
 	}
@@ -93,6 +99,14 @@ public class CurcommcApplication implements CommandLineRunner{
 		ped2.setPagamento(pagto2);
 		cli1.getPedidos().addAll(Arrays.asList(ped1));
 		cli2.getPedidos().addAll(Arrays.asList(ped2));
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		ped1.getItens().addAll(Arrays.asList(ip1,ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip2));
+		p3.getItens().addAll(Arrays.asList(ip3));
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
 		estadoRepository.saveAll(Arrays.asList(est1,est2,est3));
@@ -101,6 +115,7 @@ public class CurcommcApplication implements CommandLineRunner{
 		enderecoRepository.saveAll(Arrays.asList(e1,e2,e3));
 		pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
 		
 		
 	}
